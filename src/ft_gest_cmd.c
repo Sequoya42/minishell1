@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:34 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/12 22:43:04 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/13 00:12:10 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,6 @@ void	ft_gest_cmd(t_cmd *cmd)
 		aff_env(cmd);
 	else if (ft_strnstr(cmd->name, "unsetenv", 8) != NULL)
 		ft_unsetenv(cmd);
+	else
+		ft_error();
 }

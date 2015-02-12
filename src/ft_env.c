@@ -6,7 +6,7 @@
 /*   By: rbaum <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/12 19:39:12 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/12 23:09:45 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/13 00:53:49 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,40 @@
 void    aff_env(t_cmd *cmd)
 {
     int i;
+	int k;
+	char **tmp;
 
-    i = 0;
-    while (cmd->env[i])
-    {
-        while (cmd->env[i][0] == '\0')
-            i += 1;
-        if (cmd->env[i])
-            ft_putendl(cmd->env[i++]);
-    }
+   i = 0;
+   k = 0;
+   while (cmd->env[i])
+   {
+	   if (cmd->env[i][0] == '\0')
+		   k++;
+	   i++;
+   }
+   if ((tmp = malloc(sizeof(char*) * (i - k) + 1)) == NULL)
+	   ft_error();
+   i = 0;
+   k = 0;
+   while (cmd->env[i])
+   {
+        while (cmd->env[i][0] == '\0' && cmd->env[i + 1])
+			i += 1;
+		if (cmd->env[i])
+		{
+			tmp[k++] = cmd->env[i++];
+			ft_putendl(tmp[k - 1]);
+		}
+   }
+   cmd->env = tmp;
 }
 
 int     check_env(t_cmd *cmd)
 {
     int i;
+	char *tmp;
 
     i = 0;
-	cmd->arg = ft_strsplit(cmd->name, ' ');
-	i = 0;
 	while (cmd->arg[i])
 		i++;
 	if (i > 2)
@@ -43,9 +59,10 @@ int     check_env(t_cmd *cmd)
     while (cmd->env[i])
     {
         int k = 0;
-        while (cmd->env[i][k] == cmd->name[k])
+		tmp = ft_strchr(cmd->env[i], '=');
+        while (tmp[k] == cmd->name[k])
         {
-            if (cmd->name[k + 1] == ' ')
+            if (cmd->name[k + 1] == ' ' && tmp[k + 1] == '=')
             {
 				cmd->env[i] = ft_strjoin(cmd->arg[0], "=");
 				cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[1]);
@@ -65,6 +82,7 @@ int     set_env(t_cmd *cmd)
 
     i = 0;
     cmd->name = cmd->name + 7;
+	cmd->arg = ft_strsplit(cmd->name, ' ');
     if (check_env(cmd) == 1)
         return (1);
         tmp = cmd->env;
@@ -80,32 +98,38 @@ int     set_env(t_cmd *cmd)
     return (0);
 }
 
-int     ft_unsetenv2(t_cmd *cmd)
+int     ft_unsetenv(t_cmd *cmd)
 {
     int i;
     int j;
+	int k;
 
     i = 0;
     cmd->name = cmd->name + 9;
+	cmd->arg = NULL;
+	cmd->arg = ft_strsplit(cmd->name, ' ');
     while (cmd->env[i])
     {
         j = 0;
+		k = 0;
         while (cmd->env[i][j] != '=')
             j++;
-        if (ft_strnstr(cmd->env[i], cmd->name, j))
-        {
-            cmd->env[i][0] = '\0';
-            return (1);
-        }
+		ft_putnbrn(j);
+		while (cmd->arg[k])
+		{
+			if (ft_strnstr(cmd->env[i], cmd->arg[k], j) && \
+				cmd->env[i][0] == cmd->arg[k][0])
+			{
+				if (cmd->env[i][j] == '=')
+				{
+					ft_putnbrn(j);
+				cmd->env[i][0] = '\0';
+				}
+				break;
+			}
+			k++;
+		}
         i++;
     }
     return (0);
-}
-
-int		ft_unsetenv(t_cmd *cmd)
-{
-	int i = 0;
-	while (cmd->env[i++])
-		ft_unsetenv2(cmd);
-	return (0);
 }
