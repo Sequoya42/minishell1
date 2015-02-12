@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:30 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/11 19:45:32 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/11 23:45:13 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	ft_prompt(t_cmd *cmd)
 {
 	int		ret;
 	char	*line;
-	ft_putstr("mon_super_prompt>$ ");
+
+	ft_putstr("no_prompt>$ ");
 	while ((ret = get_next_line(1, &line)) != 0)
     {
         cmd->name = ft_strdup(line);
         ft_gest_cmd(cmd);
-		ft_putstr("mon_super_prompt>$ ");
+		ft_putstr("no_prompt>$ ");
 	}
-
 }

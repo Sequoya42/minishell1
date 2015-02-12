@@ -6,7 +6,7 @@
 #    By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/11 15:34:34 by rbaum             #+#    #+#              #
-#    Updated: 2015/02/12 19:40:39 by rbaum            ###   ########.fr        #
+#    Updated: 2015/02/11 19:16:23 by rbaum            ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -29,7 +29,6 @@ INC_PATH =		./inc/
 SRC_NAME =		main.c\
 				ft_prompt.c\
 				ft_gest_cmd.c\
-				ft_env.c\
 
 OBJ_NAME =		$(SRC_NAME:.c=.o)
 

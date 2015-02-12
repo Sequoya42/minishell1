@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 15:34:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/11 19:33:38 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/12 21:14:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,17 @@ struct s_cmd
 {
 	char	*name;
 	char	**env;
+	char	**arg;
 };
 
 void		ft_prompt(t_cmd *cmd);
 void		ft_gest_cmd(t_cmd *cmd);
+void		ft_get_right_cmd(t_cmd *cmd);
+void		aff_env(t_cmd *cmd);
+void		ft_error(void);
+
+int			check_env(t_cmd *cmd);
+int			set_env(t_cmd *cmd);
+int			ft_unsetenv(t_cmd *cmd);
 
 #endif

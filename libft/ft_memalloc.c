@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/07 18:42:24 by rbaum             #+#    #+#             */
-/*   Updated: 2014/11/08 17:03:28 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/12 22:58:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	*ft_memalloc(size_t size)
 	char	*t;
 
 	i = 0;
-	mem = (void *)malloc(size * sizeof(void));
+	if ((mem = (void *)malloc(size * sizeof(void))) == NULL)
+		return NULL;
 	t = (char *)mem;
 	if (mem != NULL)
 	{
