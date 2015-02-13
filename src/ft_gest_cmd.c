@@ -6,15 +6,16 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:34 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/13 00:12:10 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/13 15:15:37 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
 
-void	ft_error(void)
+int		ft_error(void)
 {
 	ft_putendl("Unknown Error");
+	return (1);
 }
 
 void	ft_get_right_cmd(t_cmd *cmd)
@@ -43,6 +44,6 @@ void	ft_gest_cmd(t_cmd *cmd)
 		aff_env(cmd);
 	else if (ft_strnstr(cmd->name, "unsetenv", 8) != NULL)
 		ft_unsetenv(cmd);
-	else
+	else if (cmd->name[0] != '\0')
 		ft_error();
 }
