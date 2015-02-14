@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/13 15:08:36 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/13 16:08:03 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 18:13:56 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	ft_clear_tab(char **tab)
 	int k;
 
 	i = 0;
-	if (tab[i] != NULL)
+	if (tab == NULL)
+		tab = NULL;
+	else
 	{
 		while (tab[i])
 		{
@@ -30,6 +32,7 @@ void	ft_clear_tab(char **tab)
 			}
 			i++;
 		}
+		tab = NULL;
 	}
 }
 
@@ -44,4 +47,37 @@ char	*ft_split_equ(t_cmd *cmd, int i)
 	tmp = ft_strnew(k);
 	ft_strncpy(tmp, cmd->env[i], k);
 	return (tmp);
+}
+
+void	ft_exit(t_cmd *cmd)
+{
+	int i;
+
+	i = ft_strlen(cmd->name) - 1;
+	while (i > 3)
+	{
+		if (cmd->name[i] == ' ' || cmd->name[i] == '\t')
+			i--;
+		else
+			break;
+	}
+	if (i == 3)
+		exit(0);
+	if (cmd->name[4] != ' ' || cmd->name[4] == '\t')
+	{
+		ft_putstr(cmd->name);
+		ft_putendl(": Command not found");
+	}
+	else
+		ft_putendl("exit: Expression Syntax");
+}
+
+int		ft_nb_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }

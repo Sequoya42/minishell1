@@ -6,7 +6,7 @@
 /*   By: rbaum <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/12 19:39:12 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/13 16:09:26 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 17:51:30 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,21 @@ int     check_env(t_cmd *cmd)
     int i;
 	char *tmp;
 
-    i = 0;
+    i = 1;
 	while (cmd->arg[i])
 		i++;
-	if (i == 0)
+	if (i == 1)
 		return (aff_env(cmd));
-	else if (i != 2 && i != 0)
-		return (ft_error());
+	else if (i != 3 && i != 1)
+		ft_putendl("setenv: too many arguments.");
 	i = 0;
     while (cmd->env[i])
     {
 		tmp = ft_split_equ(cmd, i);
-		if (ft_strcmp(tmp, cmd->arg[0]) == 0)
+		if (ft_strcmp(tmp, cmd->arg[1]) == 0)
 		{
-			cmd->env[i] = ft_strjoin(cmd->arg[0], "=");
-			cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[1]);
+			cmd->env[i] = ft_strjoin(cmd->arg[1], "=");
+			cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[2]);
 			return (1);
 		}
         i++;
@@ -75,8 +75,6 @@ int     set_env(t_cmd *cmd)
 	char	**tmp;
 
     i = 0;
-    cmd->name = cmd->name + 7;
-	cmd->arg = ft_strsplit(cmd->name, ' ');
     if (check_env(cmd) == 1)
         return (1);
         tmp = cmd->env;
@@ -87,8 +85,8 @@ int     set_env(t_cmd *cmd)
         i = -1;
         while (tmp[++i])
             cmd->env[i] = ft_strdup(tmp[i]);
-		cmd->env[i] = ft_strjoin(cmd->arg[0], "=");
-		cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[1]);
+		cmd->env[i] = ft_strjoin(cmd->arg[1], "=");
+		cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[2]);
     return (0);
 }
 
@@ -99,17 +97,18 @@ int     ft_unsetenv(t_cmd *cmd)
 	char *tmp;
 
     i = 0;
-    cmd->name = cmd->name + 9;
-	if (cmd->arg)
-		ft_clear_tab(cmd->arg);
-	cmd->arg = ft_strsplit(cmd->name, ' ');
     while (cmd->env[i])
     {
-		k = -1;
+		k = 0;
 		tmp = ft_split_equ(cmd, i);
 		while (cmd->arg[++k])
 			if (ft_strcmp(tmp, cmd->arg[k]) == 0)
 				cmd->env[i][0] = '\0';
+		if (k == 0)
+		{
+			ft_putendl("unsetenv: Too few arguments.");
+			return (k);
+		}
 		i++;
     }
     return (0);

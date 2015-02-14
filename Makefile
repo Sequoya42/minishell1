@@ -6,7 +6,7 @@
 #    By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/11 15:34:34 by rbaum             #+#    #+#              #
-#    Updated: 2015/02/13 15:10:42 by rbaum            ###   ########.fr        #
+#    Updated: 2015/02/14 16:44:26 by rbaum            ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -31,6 +31,7 @@ SRC_NAME =		main.c\
 				ft_gest_cmd.c\
 				ft_env.c\
 				ft_short_cmd.c\
+				ft_cd.c\
 
 OBJ_NAME =		$(SRC_NAME:.c=.o)
 
