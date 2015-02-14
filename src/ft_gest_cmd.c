@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:34 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 20:01:08 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 23:49:45 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,36 @@ void	ft_get_right_cmd(t_cmd *cmd)
 	}
 }
 
-void	check_path(t_cmd *cmd)
+int		check_current(t_cmd *cmd)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	ft_tild(cmd, 0);
+	while (cmd->env[i])
+	{
+		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL)
+			tmp = ft_strdup(cmd->env[i] + 4);
+		i++;
+	}
+	tmp = ft_strjoin(tmp, "/");
+	tmp = ft_strjoin(tmp, cmd->arg[0]);
+	if ((access(tmp, F_OK)) != -1)
+	{
+		ft_exec(cmd, tmp);
+		return (1);
+	}
+	return (0);
+}
+
+int		check_path(t_cmd *cmd)
 {
 	int i;
-	int k;
-
-	ft_putendl("chekc check");
+	
 	cmd->path = ft_strsplit(cmd->env[0] + 5, ':');
-	ft_clear_tab(cmd->arg);
-	cmd->arg = ft_strsplit(cmd->name, ' ');
+	if ((check_current(cmd) == 1))
+		return (1);
 	i = 0;
 	while (cmd->path[i])
 	{
@@ -49,28 +70,29 @@ void	check_path(t_cmd *cmd)
 		cmd->path[i] = ft_strjoin(cmd->path[i], cmd->arg[0]);
 		if ((access(cmd->path[i], F_OK)) != -1)
 		{
-			ft_exec(cmd, i);
-			k = 1;
+			ft_exec(cmd, cmd->path[i]);
+			return (1);
 		}
 		i++;
 	}
-	if (k != 1)
-		ft_error();
+	ft_putstr(cmd->arg[0]);
+	ft_putendl(": Command not found.");
+	return (0);
 }
 
 void	ft_gest_cmd(t_cmd *cmd)
 {
-	if (ft_strnstr(cmd->name, "exit", 4) != NULL)
+	if (ft_strcmp(cmd->arg[0], "exit") == 0)
 		ft_exit(cmd);
-	else if(ft_strnstr(cmd->name, "setenv", 6) != NULL)
+	else if(ft_strcmp(cmd->arg[0], "setenv") == 0)
 		set_env(cmd);
-	else if(ft_strnstr(cmd->name, "env", 3) != NULL)
+	else if(ft_strcmp(cmd->arg[0], "env") == 0)
 		aff_env(cmd);
-	else if (ft_strnstr(cmd->name, "unsetenv", 8) != NULL)
+	else if (ft_strcmp(cmd->arg[0], "unsetenv") == 0)
 		ft_unsetenv(cmd);
-	else if (ft_strnstr(cmd->name, "cd", 2) != NULL)
-		ft_get_pwd(cmd);
-	else if (cmd->name[0] == '\0')
+	else if (ft_strcmp(cmd->arg[0], "cd") == 0)
+		ft_change_dir(cmd);
+	else if (cmd->arg[0] == '\0')
 		cmd->name = cmd->name;
 	else
 		check_path(cmd);

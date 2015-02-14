@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/13 15:08:36 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 18:13:56 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 23:55:08 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,35 @@ int		ft_nb_tab(char **tab)
 	while (tab[i])
 		i++;
 	return (i);
+}
+
+char	*ft_get_back(char *str, t_cmd *cmd)
+{
+	int i;
+	char *tmp;
+	int k = 0;
+	k = k;
+	cmd = cmd;
+	while (cmd->arg[k])
+		ft_putendl(cmd->arg[k++]);
+	i = ft_strlen(str);
+	while (str[i] != '/')
+		i--;
+	tmp = ft_strndup(str, i);
+	return (tmp);
+}
+
+void	ft_tild(t_cmd *cmd, int k)
+{
+	char	*tmp;
+	
+	if (cmd->arg[k])
+	{
+		if (cmd->arg[k][0] == '~')
+		{
+			tmp = ft_strdup(cmd->arg[k]);
+			cmd->arg[k] = ft_strdup(cmd->home + 5);
+			cmd->arg[k] = ft_strjoin(cmd->arg[1], tmp + 1);
+		}
+	}
 }

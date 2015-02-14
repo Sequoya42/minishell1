@@ -6,30 +6,20 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/14 15:52:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 20:00:30 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 23:56:31 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
 
-char	*ft_get_back(char *str)
-{
-	int i;
-	char *tmp;
-	
-	i = ft_strlen(str);
-	while (str[i] != '/')
-		i--;
-	tmp = ft_strndup(str, i);
-	return (tmp);
-}
+//Gerez les env pwd et oldpwd correctement
+//Utiliser le ft_get_back et le tuner
 
 void	ft_update_env(t_cmd *cmd)
 {
 	int i;
 
 	i = 0;
-	ft_putendl("est");
 	while (cmd->env[i])
 	{
 		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL &&
@@ -40,7 +30,7 @@ void	ft_update_env(t_cmd *cmd)
 		}
 		else if (ft_strnstr(cmd->env[i], "PWD", 4) != NULL &&
 				 ft_strcmp(cmd->arg[1], "..") == 0)
-			cmd->env[i] = ft_get_back(cmd->env[i]);
+			cmd->env[i] = ft_get_back(cmd->env[i], cmd);
 		if (ft_strnstr(cmd->env[i], "OLDPWD=", 7) != NULL)
 			cmd->env[i] = ft_strjoin("OLD", cmd->pwd);
 		i++;
@@ -67,18 +57,33 @@ void	ft_go_home(t_cmd *cmd)
 	}
 }
 
+void	ft_previous_dir(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	chdir(cmd->oldpwd + 7);
+	while (cmd->env[i])
+	{
+		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL)
+			cmd->env[i] = ft_strjoin("PWD=", cmd->oldpwd + 7);
+		if (ft_strnstr(cmd->env[i], "OLDPWD=", 7) != NULL)
+			cmd->env[i] = ft_strjoin("OLD", cmd->pwd);
+		i++;
+	}
+}
 void	ft_cd_error(t_cmd *cmd)
 {
 	int i;
-	
-	i = 0;
+
 	i = ft_nb_tab(cmd->arg);
-	ft_putendl(cmd->name);
 	if (i == 1 || (ft_strcmp(cmd->name, "cd") == 0))
 		ft_go_home(cmd);
+	else if (ft_strcmp(cmd->arg[1], "-") == 0)
+		ft_previous_dir(cmd);
 	else if (i != 2 && i != 0)
 	{
-		ft_putstr("cd: string not in pwd: ");
+ 		ft_putstr("cd: string not in pwd: ");
 		ft_putendl(cmd->arg[1]);
 	}
 	else
@@ -103,10 +108,13 @@ void	ft_get_pwd(t_cmd *cmd)
 			cmd->home = ft_strdup(cmd->env[i]);
 		i++;
 	}
-	if (cmd->arg == NULL)
-		ft_go_home(cmd);
-	if ((chdir(cmd->arg[1])) == 0)
+}
+
+void	ft_change_dir(t_cmd *cmd)
+{
+	ft_tild(cmd, 1);
+	if((chdir(cmd->arg[1])) == 0)
 		ft_update_env(cmd);
- 	else 
+	else
 		ft_cd_error(cmd);
 }

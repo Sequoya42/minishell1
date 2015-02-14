@@ -6,7 +6,7 @@
 /*   By: rbaum <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/12 19:39:12 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 17:51:30 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/14 22:59:30 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ int    aff_env(t_cmd *cmd)
 
    i = 0;
    k = 0;
+   if (ft_nb_tab(cmd->arg) > 1)
+   {
+	   check_path(cmd);
+	   return (0);
+   }
    while (cmd->env[i])
    {
 	   if (cmd->env[i][0] == '\0')
@@ -35,8 +40,9 @@ int    aff_env(t_cmd *cmd)
    {
         while (cmd->env[i][0] == '\0' && cmd->env[i + 1])
 			i += 1;
-		if (cmd->env[i])
-			ft_putendl(tmp[k++] = cmd->env[i++]);
+		if (cmd->env[i] && cmd->env[i][0] != '\0')
+			ft_putendl(tmp[k++] = cmd->env[i]);
+		i++;
    }
    cmd->env = tmp;
    return (0);
@@ -47,12 +53,10 @@ int     check_env(t_cmd *cmd)
     int i;
 	char *tmp;
 
-    i = 1;
-	while (cmd->arg[i])
-		i++;
+    i = ft_nb_tab(cmd->arg);
 	if (i == 1)
 		return (aff_env(cmd));
-	else if (i != 3 && i != 1)
+	else if (i > 3)
 		ft_putendl("setenv: too many arguments.");
 	i = 0;
     while (cmd->env[i])
@@ -86,7 +90,8 @@ int     set_env(t_cmd *cmd)
         while (tmp[++i])
             cmd->env[i] = ft_strdup(tmp[i]);
 		cmd->env[i] = ft_strjoin(cmd->arg[1], "=");
-		cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[2]);
+		if (cmd->arg[2])
+			cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[2]);
     return (0);
 }
 
