@@ -6,14 +6,11 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/14 15:52:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 23:56:31 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/15 19:18:50 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
-
-//Gerez les env pwd et oldpwd correctement
-//Utiliser le ft_get_back et le tuner
 
 void	ft_update_env(t_cmd *cmd)
 {
@@ -22,15 +19,8 @@ void	ft_update_env(t_cmd *cmd)
 	i = 0;
 	while (cmd->env[i])
 	{
-		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL &&
-			ft_strcmp(cmd->arg[1], "..") != 0)
-		{
-			cmd->env[i] = ft_strjoin(cmd->pwd, "/");
-			cmd->env[i] = ft_strjoin(cmd->env[i], cmd->arg[1]);
-		}
-		else if (ft_strnstr(cmd->env[i], "PWD", 4) != NULL &&
-				 ft_strcmp(cmd->arg[1], "..") == 0)
-			cmd->env[i] = ft_get_back(cmd->env[i], cmd);
+		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL)
+			cmd->env[i] = ft_strjoin("PWD=", getcwd(NULL, 0));
 		if (ft_strnstr(cmd->env[i], "OLDPWD=", 7) != NULL)
 			cmd->env[i] = ft_strjoin("OLD", cmd->pwd);
 		i++;
@@ -72,6 +62,7 @@ void	ft_previous_dir(t_cmd *cmd)
 		i++;
 	}
 }
+
 void	ft_cd_error(t_cmd *cmd)
 {
 	int i;
@@ -83,7 +74,7 @@ void	ft_cd_error(t_cmd *cmd)
 		ft_previous_dir(cmd);
 	else if (i != 2 && i != 0)
 	{
- 		ft_putstr("cd: string not in pwd: ");
+		ft_putstr("cd: string not in pwd: ");
 		ft_putendl(cmd->arg[1]);
 	}
 	else
@@ -93,28 +84,20 @@ void	ft_cd_error(t_cmd *cmd)
 	}
 }
 
-void	ft_get_pwd(t_cmd *cmd)
+int		ft_change_dir(t_cmd *cmd)
 {
 	int i;
 
-	i = 0;
-	while (cmd->env[i])
+	i = ft_nb_tab(cmd->arg);
+	if (i > 2)
 	{
-		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL)
-			cmd->pwd = ft_strdup(cmd->env[i]);
-		if (ft_strnstr(cmd->env[i], "OLDPWD=", 7) != NULL)
-			cmd->oldpwd = ft_strdup(cmd->env[i]);
-		if (ft_strnstr(cmd->env[i], "HOME=", 5) != NULL)
-			cmd->home = ft_strdup(cmd->env[i]);
-		i++;
+		ft_putendl("cd: Too many arguments");
+		return (1);
 	}
-}
-
-void	ft_change_dir(t_cmd *cmd)
-{
 	ft_tild(cmd, 1);
-	if((chdir(cmd->arg[1])) == 0)
+	if ((chdir(cmd->arg[1])) == 0)
 		ft_update_env(cmd);
 	else
 		ft_cd_error(cmd);
+	return (0);
 }

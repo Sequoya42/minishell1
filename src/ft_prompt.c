@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:30 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 23:48:47 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/15 19:49:05 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ void	ft_prompt(t_cmd *cmd)
 
 	ft_putstr("no_prompt>$ ");
 	while ((ret = get_next_line(1, &line)) != 0)
-    {
-        cmd->name = ft_strdup(line);
+	{
+		cmd->name = ft_strdup(line);
 		ft_get_right_cmd(cmd);
 		ft_clear_tab(cmd->arg);
 		cmd->arg = ft_strsplit(cmd->name, ' ');
 		ft_get_pwd(cmd);
-        ft_gest_cmd(cmd);
+		ft_gest_cmd(cmd);
+		free(line);
 		ft_putstr("no_prompt>$ ");
 	}
 }

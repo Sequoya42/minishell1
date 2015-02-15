@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 15:34:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 23:50:00 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/15 20:02:51 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 typedef struct s_cmd		t_cmd;
 
-struct s_cmd
+struct		s_cmd
 {
 	char	*name;
 	char	*home;
@@ -45,8 +45,8 @@ void		ft_exec(t_cmd *cmd, char *path);
 void		ft_get_pwd(t_cmd *cmd);
 void		ft_exit(t_cmd *cmd);
 void		ft_tild(t_cmd *cmd, int k);
-void		ft_change_dir(t_cmd *cmd);
 
+int			ft_change_dir(t_cmd *cmd);
 int			ft_error(void);
 int			check_path(t_cmd *cmd);
 int			check_env(t_cmd *cmd);
@@ -56,6 +56,5 @@ int			ft_unsetenv(t_cmd *cmd);
 int			ft_nb_tab(char **tab);
 
 char		*ft_split_equ(t_cmd *cmd, int i);
-char		*ft_get_back(char *str, t_cmd *cmd);
 
 #endif

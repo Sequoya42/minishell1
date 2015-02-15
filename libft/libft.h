@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/03 18:16:30 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/14 19:12:33 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/15 19:57:44 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void				ft_putendl(char const *s);
 void				ft_putnbr(int n);
 void				ft_putnbrn(int n);
 void				ft_putnbrendl(int n);
-
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
@@ -59,6 +58,7 @@ void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
+void				ft_clear_tab(char **tab);
 
 int					ft_atoi(char const *str);
 int					ft_isalnum(int c);
@@ -74,6 +74,7 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 int					get_next_line(int const fd, char **line);
+int					ft_nb_tab(char **tab);
 
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strncat(char *s1, const char *s2, size_t n);
