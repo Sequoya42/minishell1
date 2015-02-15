@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/14 15:52:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/15 19:18:50 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/15 22:40:57 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_update_env(t_cmd *cmd)
 	int i;
 
 	i = 0;
+	ft_get_pwd(cmd);
 	while (cmd->env[i])
 	{
 		if (ft_strnstr(cmd->env[i], "PWD=", 4) != NULL)
