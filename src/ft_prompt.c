@@ -6,11 +6,17 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 19:45:30 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/15 23:13:13 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/18 18:35:15 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_sh1.h"
+
+void sig_handler(int signo)
+{
+	if (signo == SIGINT)
+		ft_putchar('\n');
+}
 
 void	ft_exec(t_cmd *cmd, char *path)
 {
@@ -22,7 +28,11 @@ void	ft_exec(t_cmd *cmd, char *path)
 	if (pid == -1)
 		ft_error();
 	if (pid > 0)
+	{
+	if (signal(SIGINT, sig_handler) == SIG_ERR)
+		kill(pid, SIGINT);
 		waitpid(pid, &stat, 0);
+	}
 	else
 		execve(path, cmd->arg, cmd->env);
 }
@@ -32,7 +42,9 @@ void	ft_prompt(t_cmd *cmd)
 	int		ret;
 	char	*line;
 
-	ft_putstr("no_prompt>$ ");
+		ft_putchar('[');
+	ft_putstr(ft_strjoin(ft_strrchr(getcwd(NULL, 0) , '/') + 1, "] ☯ prompt>$ "));
+	cmd->path = ft_strsplit("Lorde jajajaja", ' ');
 	while ((ret = get_next_line(1, &line)) != 0)
 	{
 		cmd->name = ft_strdup(line);
@@ -42,6 +54,7 @@ void	ft_prompt(t_cmd *cmd)
 		ft_update_env(cmd);
 		ft_gest_cmd(cmd);
 		free(line);
-		ft_putstr("no_prompt>$ ");
+		ft_putchar('[');
+		ft_putstr(ft_strjoin(ft_strrchr(getcwd(NULL, 0) , '/') + 1, "] ☯ prompt>$ "));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 16:03:48 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/15 20:02:05 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/18 18:40:48 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ int			main(int argc, char **argv, char **envp)
 	argv = argv;
 	cmd = malloc(sizeof(t_cmd));
 	cmd->env = envp;
-	if (ft_nb_tab(cmd->env) < 2)
+	if (!envp[0])
 	{
-		ft_putendl("Cannot run without env");
-		exit(-1);
+		cmd->env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+		cmd->env[1] = ft_strjoin("OLD=", cmd->env[0]);
+		ft_putendl("Running without env  : Behavior may be undefined");
+		ft_putendl("if you wish to set the variable PATH, type set_path");
 	}
 	ft_prompt(cmd);
 	return (0);
 }
+
+// Rediriger les erreurs sur la sortie d'erreur

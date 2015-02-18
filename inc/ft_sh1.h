@@ -6,7 +6,7 @@
 /*   By: rbaum <rbaum@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 15:34:58 by rbaum             #+#    #+#             */
-/*   Updated: 2015/02/15 22:41:19 by rbaum            ###   ########.fr       */
+/*   Updated: 2015/02/18 19:18:16 by rbaum            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		ft_cd_error(t_cmd *cmd);
 
 int			ft_change_dir(t_cmd *cmd);
 int			ft_error(void);
-int			check_current(t_cmd *cmd);
+int			check_current(t_cmd *cmd, int k);
 int			check_path(t_cmd *cmd);
 int			check_env(t_cmd *cmd);
 int			aff_env(t_cmd *cmd);
